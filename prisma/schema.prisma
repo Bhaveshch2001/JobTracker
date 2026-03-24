@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  jobs      Job[]
+}
+
+model Job {
+  id         Int      @id @default(autoincrement())
+  title      String 
+  status     Status
+  dueDate    DateTime?
+  createdAt  DateTime @default(now())
+  assignee   User     @relation(fields: [assigneeId], references: [id])
+  assigneeId Int
+}
+
+enum Status {
+  TODO
+  IN_PROGRESS
+  DONE
+}
